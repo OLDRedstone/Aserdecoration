@@ -1,7 +1,8 @@
+-- Translation by machine
 -- Translation verifed by TM1357
-language = {
+return {
     menuTitle = "Export the Rhythm Doctor Sprite Decoration",
-    changeLangMenuTitle = "Change the language of the sprite exporter",
+    changeLangMenuTitle = "Change the language of Aserdecoration",
     Name = "English (United States)",
     Id = "en-us",
     LangDialog = {
@@ -34,24 +35,55 @@ language = {
         loopOption = {
             label = "Loop settings",
             option = "Loop by beat",
-            options = { "Loop by beat", "Always looping (beat-independent)", "Does not loop" },
+            options = {
+                "Loop by beat",
+                "Always looping (beat-independent)",
+                "Does not loop",
+                "Let me decide each one"
+            },
+        },
+        loopSetName = {
+            label = "Select an emoticon",
+        },
+        loopSetData = {
+            label = "Expression loop",
+            options = {
+                "Loop by beat",
+                "Always looping (beat-independent)",
+                "Does not loop"
+            },
         },
         loopDirection = {
             label = "Loop direction",
             option = "Follow Aseprite",
-            options = { "Forward", "Reverse", "Forward, Back", "Reverse, Back", "Follow Aseprite" },
+            options = {
+                "Forward",
+                "Reverse",
+                "Forward, Back",
+                "Reverse, Back",
+                "Follow Aseprite"
+            },
         },
         fpsMethod = {
             label = "Frame rate settings",
-            option = "Do not set (0)",
-            options = { "Do not set (0)", "Average by aseprite parameter", "Change all to" },
+            option = "Disabled",
+            options = {
+                "Disabled",
+                "Average by Aseprite parameter",
+                "Try to get duplicate frames with the Aseprite parameter",
+                "Change all to"
+            },
         },
         fpsSet = "fps",
         fpsWarn = "Sprite plays back to the default emoticon",
         outputMode = {
             label = "Arrangement",
             option = "Packed",
-            options = { "Horizontal", "Vertical", "Packed" },
+            options = {
+                "Horizontal",
+                "Vertical",
+                "Packed"
+            },
         },
         usage = "Usage",
         spriteWarnTitle = "Automatically fill in blank expressions:",
@@ -60,4 +92,3 @@ language = {
     },
     successfulExit = "Successful exit"
 }
-return language

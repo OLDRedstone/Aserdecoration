@@ -1,6 +1,8 @@
-language = {
+-- Made by Observer
+-- Translation verifed by Observer
+return {
     menuTitle = "导出节奏医生精灵图",
-    changeLangMenuTitle = "更改精灵图导出器的语言",
+    changeLangMenuTitle = "更改 Aserdecoration 的语言",
     Name = "中文",
     Id = "zh-cn",
     LangDialog = {
@@ -33,24 +35,55 @@ language = {
         loopOption = {
             label = "循环设置",
             option = "按节拍循环",
-            options = { "按节拍循环", "始终循环(不依赖节拍)", "不循环" },
+            options = {
+                "按节拍循环",
+                "始终循环(不依赖节拍)",
+                "不循环",
+                "让我决定每一个"
+            },
+        },
+        loopSetName = {
+            label = "选择表情",
+        },
+        loopSetData = {
+            label = "表情循环",
+            options = {
+                "按节拍循环",
+                "始终循环(不依赖节拍)",
+                "不循环",
+            },
         },
         loopDirection = {
             label = "循环方向",
             option = "遵循 Aseprite",
-            options = { "正向", "逆向", "正向，来回", "逆向，来回", "遵循 aseprite" },
+            options = {
+                "正向",
+                "逆向",
+                "正向，来回",
+                "逆向，来回",
+                "遵循 aseprite"
+            },
         },
         fpsMethod = {
             label = "帧率设置",
-            option = "不设置(0)",
-            options = { "不设置(0)", "通过 Aseprite 参数取平均值", "全部更改为" },
+            option = "禁用",
+            options = {
+                "禁用",
+                "通过 Aseprite 参数取平均值",
+                "尝试以 Aseprite 参数获取重复帧",
+                "全部更改为"
+            },
         },
         fpsSet = "fps",
         fpsWarn = "精灵图播放时会回到默认表情",
         outputMode = {
             label = "排列方式",
             option = "打包",
-            options = { "水平条", "垂直条", "打包" },
+            options = {
+                "水平条",
+                "垂直条",
+                "打包"
+            },
         },
         usage = "用途",
         spriteWarnTitle = "自动补充空白表情:",
@@ -59,4 +92,3 @@ language = {
     },
     successfulExit = "成功退出"
 }
-return language

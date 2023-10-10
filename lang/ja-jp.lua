@@ -1,7 +1,8 @@
+-- Translation by machine
 -- Translation verified by miaobukeyan
-language = {
+return {
     menuTitle = "リズムドクタースプライト図のエクスポート",
-    changeLangMenuTitle = "スプライトエクスポーターの言語を変更する",
+    changeLangMenuTitle = "Aserdecoration の言語を変更する",
     Name = "日本語",
     Id = "ja-jp",
     LangDialog = {
@@ -34,24 +35,55 @@ language = {
         loopOption = {
             label = "ループ設定",
             option = "ビートごとのサイクル",
-            options = { "ビートごとのサイクル", "常にループ(ビートに依存しない)", "ループなし" },
+            options = {
+                "ビートごとのサイクル",
+                "常にループ(ビートに依存しない)",
+                "ループなし",
+                "それぞれ決めさせてください"
+            },
+        },
+        loopSetName = {
+            label = "絵文字を選択する",
+        },
+        loopSetData = {
+            label = "式ループ",
+            options = {
+                "ビートごとのサイクル",
+                "常にループ(ビートに依存しない)",
+                "ループなし"
+            },
         },
         loopDirection = {
             label = "ループ方向",
-            option = "アセプライトに従う",
-            options = { "進む", "後進", "進む、戻る", "逆、戻る", "アセプライトに従う" },
+            option = "Aseprite に従う",
+            options = {
+                "進む",
+                "後進",
+                "進む、戻る",
+                "逆、戻る",
+                "Aseprite に従う"
+            },
         },
         fpsMethod = {
             label = "フレームレート設定",
-            option = "(0)を設定しない",
-            options = { "(0)を設定しない", "アセプライトパラメータによる平均", "すべてに変更" },
+            option = "無効にする",
+            options = {
+                "無効にする",
+                "Aseprite パラメータによる平均",
+                "Aseprite パラメーターを使用して重複するフレームを取得してみてください",
+                "すべてに変更"
+            },
         },
         fpsSet = "fps",
         fpsWarn = "スプライトはデフォルトの絵文字に再生されます",
         outputMode = {
             label = "配置",
             option = "パック",
-            options = { "水平並び", "垂直並び", "パック" },
+            options = {
+                "水平並び",
+                "垂直並び",
+                "パック"
+            },
         },
         usage = "使う",
         spriteWarnTitle = "空白の式を自動的に入力する:",
@@ -60,4 +92,3 @@ language = {
     },
     successfulExit = "正常な終了"
 }
-return language

@@ -32,7 +32,7 @@ execute = function(plugin)
     end
 
     LangDialog = Dialog {
-            title = "language",
+            title = tempLang[currentLang].LangDialog.Title,
             notitlebar = false,
             onclose = nil
         }

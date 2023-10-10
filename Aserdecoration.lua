@@ -1,7 +1,84 @@
 local script_name = debug.getinfo(1, "S").source:sub(2)
 local script_path = script_name:match("(.*[/\\])")
 local setting = assert(loadfile(script_path .. "__pref.lua"))()
-local language = assert(loadfile(script_path .. "lang\\" .. setting.lang..".lua"))()
+if not setting then
+    return nil
+end
+local language = assert(loadfile(script_path .. "lang\\" .. setting.lang .. ".lua"))()
+
+-- encode
+local switch = {
+    number = function(data)
+        return data
+    end,
+    boolean = function(data)
+        return data
+    end,
+    table = function(data)
+        return '[' .. table.concat(data, ",") .. ']'
+    end,
+    string = function(data)
+        return '"' .. data .. '"'
+    end
+}
+local function gcd(a, b)
+    if a == b then
+        return a
+    else
+        times = times + 1
+        if a > b then
+            return gcd(a - b, b)
+        else
+            return gcd(a, b - a)
+        end
+    end
+end
+
+local function contains(table, key)
+    for i = 1, #table do
+        if table[i] == key then
+            return true
+        end
+    end
+    return false
+end
+
+local function gcdList(list)
+    for i = 1, #list do
+        list[i] = list[i] * 1000
+    end
+    local temp = list[1]
+    for i = 2, #list do
+        print(tostring(i) .. "/" .. tostring(#list))
+        temp = gcd(temp, list[i])
+    end
+    return temp / 1000
+end
+
+local function sum(list)
+    local s = 0
+    for i = 1, #list do
+        s = s + list[i]
+    end
+    return s
+end
+
+local function keys(table)
+    local list = {}
+    for key, _ in pairs(table) do
+        list[#list + 1] = key
+    end
+    return list
+end
+
+local function values(table)
+    local list = {}
+    for _, value in pairs(table) do
+        list[#list + 1] = value
+    end
+    return list
+end
+
 execute = function()
     local DecorationData = {}
     local sprite = app.sprite
@@ -14,11 +91,11 @@ execute = function()
         character = { "neutral", "happy", "barely", "missed" },
         sprite = { "neutral" }
     }
+    local namedExpression = { "neutral", "happy", "barely", "missed" }
     local lang = {
         [language.Usage.character] = "character",
         [language.Usage.sprite] = "sprite"
     }
-
 
     local showCompletedExpression = {
         ["character"] = function()
@@ -29,35 +106,27 @@ execute = function()
         end
     }
 
-    -- encode
-    local switch = {
-        number = function(data)
-            return data
-        end,
-        boolean = function(data)
-            return data
-        end,
-        table = function(data)
-            return '[' .. table.concat(data, ",") .. ']'
-        end,
-        string = function(data)
-            return '"' .. data .. '"'
-        end
-    }
-
     function JsonToString(data, maxLengthData)
         local Output = '{'
         local char = ''
-        local propertyOrder = { "name", "loop", "fps", "loopStart", "portraitOffset", "portraitSize", "portraitScale",
-            "frames" }
+        local propertyOrder = {
+            "name",
+            "loop",
+            "fps",
+            "loopStart",
+            "portraitOffset",
+            "portraitSize",
+            "portraitScale",
+            "frames"
+        }
         local tos = function(key, value)
             local out = '"' .. key .. '": ' .. switch[type(value)](value)
             return out
         end
         for i = 1, #propertyOrder - 1 do
             Output = Output ..
-                tos(propertyOrder[i], data[propertyOrder[i]]) .. ', '
-            for j = 1, maxLengthData[propertyOrder[i]] - #tostring(switch[type(data[propertyOrder[i]])](data[propertyOrder[i]])) do
+                tos(propertyOrder[i], data[propertyOrder[i]]) .. ','
+            for j = #tostring(switch[type(data[propertyOrder[i]])](data[propertyOrder[i]])), maxLengthData[propertyOrder[i]] do
                 Output = Output .. ' '
             end
         end
@@ -80,15 +149,30 @@ execute = function()
     end
 
     local renewFrameSetWidget = function()
+        local visible1 = headerData.data.showPic
+        local visible2 = headerData.data.loopOption ==
+            language.Dialog.loopOption.options[4]
         headerData
-            :modify { id = "frameTitle", visible = headerData.data.showPic }
-            :modify { id = "index", visible = headerData.data.showPic }
-        --:modify { id = "preview", visible = headerData.data.showPic }
-            :modify { id = "frameOffsetTitle", visible = headerData.data.showPic }
-            :modify { id = "rowPreviewOffsetX", visible = headerData.data.showPic }
-            :modify { id = "rowPreviewOffsetY", visible = headerData.data.showPic }
+            :modify { id = "frameTitle", visible = visible1 }
+            :modify { id = "index", visible = visible1 }
+        --:modify { id = "preview", visible = visible }
+            :modify { id = "frameOffsetTitle", visible = visible1 }
+            :modify { id = "rowPreviewOffsetX", visible = visible1 }
+            :modify { id = "rowPreviewOffsetY", visible = visible1 }
+            :modify { id = "loopSetTop", visible = visible2 }
+            :modify { id = "loopSetBottom", visible = visible2 }
     end
 
+    local decorationLoops = {}
+    for i, tag in ipairs(spr.tags) do
+        decorationLoops[tag.name] = language.Dialog.loopSetData.options[1]
+    end
+
+    local loopLangTrans = {
+        [language.Dialog.loopSetData.options[1]] = "onBeat",
+        [language.Dialog.loopSetData.options[2]] = "yes",
+        [language.Dialog.loopSetData.options[3]] = "no"
+    }
 
     local averageFps = 0
     for _, frame in ipairs(sprite.frames) do
@@ -165,7 +249,44 @@ execute = function()
             label = language.Dialog.loopOption.label,
             option = language.Dialog.loopOption.option,
             options = language.Dialog.loopOption.options,
-            onchange = nil
+            onchange = function()
+                local visible = headerData.data.loopOption ==
+                    language.Dialog.loopOption.options[4]
+                headerData
+                    :modify { id = "loopSetTop", visible = visible }
+                    :modify { id = "loopSetName", visible = visible }
+                    :modify { id = "loopSetData", visible = visible }
+                    :modify { id = "loopSetBottom", visible = visible }
+            end
+        }
+        :separator {
+            id = "loopSetTop",
+            visible = false
+        }
+        :combobox {
+            id = "loopSetName",
+            visible = false,
+            label = language.Dialog.loopSetName.label,
+            option = keys(decorationLoops)[1],
+            options = keys(decorationLoops),
+            onchange = function()
+                headerData
+                    :modify { id = "loopSetData", option = decorationLoops[headerData.data.loopSetName] }
+            end
+        }
+        :combobox {
+            id = "loopSetData",
+            visible = false,
+            label = language.Dialog.loopSetData.label,
+            option = language.Dialog.loopSetData.option,
+            options = language.Dialog.loopSetData.options,
+            onchange = function()
+                decorationLoops[headerData.data.loopSetName] = headerData.data.loopSetData
+            end
+        }
+        :separator {
+            id = "loopSetBottom",
+            visible = false
         }
         :combobox {
             id = "loopDirection",
@@ -180,7 +301,9 @@ execute = function()
             option = language.Dialog.fpsMethod.option,
             options = language.Dialog.fpsMethod.options,
             onchange = function()
-                headerData:modify { id = "fpsSet", visible = headerData.data.fpsMethod == "全部更改为" }
+                local visible = language.Dialog.fpsMethod.options[4]
+                headerData:modify { id = "fpsSet", visible =
+                    headerData.data.fpsMethod == visible }
             end
         }
         :number {
@@ -258,7 +381,7 @@ execute = function()
         end
 
         --default expressions
-        local createDefaultExpression = {}
+        local createDefaultExpression
         if headerData.data.usage == language.Usage.character then
             createDefaultExpression = defaultExpression.character
         elseif headerData.data.usage == language.Usage.sprite then
@@ -281,49 +404,68 @@ execute = function()
         for i, tag in ipairs(spr.tags) do
             local frames = {}
             local fps = 0
+            local framesFps = {}
             if headerData.data.loopDirection == language.Dialog.loopDirection.options[1] or
-                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir == AniDir.FORWARD) then
+                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir ==
+                    AniDir.FORWARD) then
                 for j = tag.fromFrame.frameNumber, tag.toFrame.frameNumber do
                     frames[#frames + 1] = j - 1
-                    fps = fps + sprite.frames[j].duration
+                    framesFps[#framesFps + 1] = sprite.frames[j].duration
                 end
             elseif headerData.data.loopDirection == language.Dialog.loopDirection.options[2] or
-                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir == AniDir.REVERSE) then
+                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir ==
+                    AniDir.REVERSE) then
                 for j = tag.toFrame.frameNumber, tag.fromFrame.frameNumber, -1 do
                     frames[#frames + 1] = j - 1
-                    fps = fps + sprite.frames[j].duration
+                    framesFps[#framesFps + 1] = sprite.frames[j].duration
                 end
             elseif headerData.data.loopDirection == language.Dialog.loopDirection.options[3] or
-                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir == AniDir.PING_PONG) then
+                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir ==
+                    AniDir.PING_PONG) then
                 for j = tag.fromFrame.frameNumber, tag.toFrame.frameNumber - 1 do
                     frames[#frames + 1] = j - 1
-                    fps = fps + sprite.frames[j].duration
+                    framesFps[#framesFps + 1] = sprite.frames[j].duration
                 end
                 for j = tag.toFrame.frameNumber, tag.fromFrame.frameNumber + 1, -1 do
                     frames[#frames + 1] = j - 1
-                    fps = fps + sprite.frames[j].duration
+                    framesFps[#framesFps + 1] = sprite.frames[j].duration
                 end
             elseif headerData.data.loopDirection == language.Dialog.loopDirection.options[4] or
-                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir == AniDir.PING_PONG_REVERSE) then
+                (headerData.data.loopDirection == language.Dialog.loopDirection.options[5] and tag.aniDir ==
+                    AniDir.PING_PONG_REVERSE) then
                 for j = tag.toFrame.frameNumber, tag.fromFrame.frameNumber + 1, -1 do
                     frames[#frames + 1] = j - 1
-                    fps = fps + sprite.frames[j].duration
+                    framesFps[#framesFps + 1] = sprite.frames[j].duration
                 end
                 for j = tag.fromFrame.frameNumber, tag.toFrame.frameNumber - 1 do
                     frames[#frames + 1] = j - 1
-                    fps = fps + sprite.frames[j].duration
+                    framesFps[#framesFps + 1] = sprite.frames[j].duration
                 end
             end
             if headerData.data.fpsMethod == language.Dialog.fpsMethod.options[1] then
                 fps = 0
             elseif headerData.data.fpsMethod == language.Dialog.fpsMethod.options[2] then
-                fps = fps * 1000 / #frames
+                fps = sum(framesFps) * 1000 / #frames
             elseif headerData.data.fpsMethod == language.Dialog.fpsMethod.options[3] then
+                local base = gcdList(framesFps) * 1000
+                fps = base
+                for j = #frames, 1, -1 do
+                    for k = 1, framesFps[j] / base - 1 do
+                        table.insert(frames, j, frames[j])
+                    end
+                end
+            elseif headerData.data.fpsMethod == language.Dialog.fpsMethod.options[4] then
                 fps = headerData.data.fpsSet
+            end
+            local loop
+            if headerData.data.loopOption == language.Dialog.loopOption.options[4] then
+                loop = loopLangTrans[decorationLoops[tag.name]]
+            else
+                loop = loopLangTrans[headerData.data.loopOption]
             end
             DecorationData[tag.name] = {
                 name = tag.name,
-                loop = "onBeat",
+                loop = loop,
                 fps = fps,
                 loopStart = 0,
                 portraitOffset = { 25, 25 },
@@ -353,9 +495,18 @@ execute = function()
             end
         end
         local char = ''
-        for _, expression in pairs(DecorationData) do
-            OutputJson = OutputJson .. char .. '\t\t' .. JsonToString(expression, maxLength)
-            char = ',\n'
+        for i = 1, #namedExpression do
+            if DecorationData[namedExpression[i]] then
+                OutputJson = OutputJson ..
+                    char .. '\t\t' .. JsonToString(DecorationData[namedExpression[i]], maxLength)
+                char = ',\n'
+            end
+        end
+        char = ',\n'
+        for expressionName, expression in pairs(DecorationData) do
+            if not contains(namedExpression, expressionName) then
+                OutputJson = OutputJson .. char .. '\t\t' .. JsonToString(expression, maxLength)
+            end
         end
         OutputJson = '{' .. header .. '\t"clips": [\n' .. OutputJson .. '\n\t]\n}'
 
