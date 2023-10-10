@@ -11,7 +11,7 @@ return {
             label = "Select your language"
         },
         ok = "OK",
-        warn = "Effective on restart"
+        warn = "Restart to take effect"
     },
     Error = {
         SaveFile = "Please open an existing file.",
@@ -24,32 +24,32 @@ return {
     Dialog = {
         Separator = {
             "Preview frame",
-            "The offset of the preview frame",
+            "Preview frame offset",
             "Animation and frame rate",
             "Export"
         },
         Title = "Sprite export options",
-        showPic = "Preview with a specific frame",
+        showPic = "Frame Preview",
         frameTitle = "Preview frame",
-        index = "Frame sequence number",
+        index = "Frame number",
         loopOption = {
             label = "Loop settings",
             option = "Loop by beat",
             options = {
                 "Loop by beat",
-                "Always looping (beat-independent)",
+                "Always (beat-independent)",
                 "Does not loop",
-                "Let me decide each one"
+                "Let me decide"
             },
         },
         loopSetName = {
-            label = "Select an emoticon",
+            label = "Select expression",
         },
         loopSetData = {
             label = "Expression loop",
             options = {
                 "Loop by beat",
-                "Always looping (beat-independent)",
+                "Always (beat-independent)",
                 "Does not loop"
             },
         },
@@ -75,7 +75,7 @@ return {
             },
         },
         fpsSet = "fps",
-        fpsWarn = "Sprite plays back to the default emoticon",
+        fpsWarn = "Sprite plays back to the default expression",
         outputMode = {
             label = "Arrangement",
             option = "Packed",
@@ -85,10 +85,10 @@ return {
                 "Packed"
             },
         },
-        usage = "Usage",
-        spriteWarnTitle = "Automatically fill in blank expressions:",
+        usage = "Type",
+        spriteWarnTitle = "Automatically fill in following blank expressions:",
         ok = "OK",
         cancel = "Cancel",
     },
-    successfulExit = "Successful exit"
+    successfulExit = "Exit successfully"
 }
