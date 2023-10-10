@@ -1,4 +1,4 @@
-#Aserdecoration: Aseprite RD Decoration
+# Aserdecoration: Aseprite RD Decoration
 将 Aseprite 转换为节奏医生精灵图及其 json 文件的快速方法。
 打开你的 Aseprite 工程文件以导出！
 
@@ -26,12 +26,12 @@
 
 插件将会以**循环节名称**创建精灵表情，并以**循环节的动画方向**、**帧的持续时间(可选)**和**对话框内的参数**在**已打开的 Aseprite 工程文件同一位置**处创建与同名的精灵图 .png 和 .json 文件。
 
-###注意
+### 注意
 + 导出时请确保打开的 Aseprite 工程文件处没有同名的 .png 文件或 ,json 文件，或者这些文件无重要数据。
 
 ***
 
-#Aserdecoration: Aseprite RD Decoration
+# Aserdecoration: Aseprite RD Decoration
 (Translated by machine)
 
 A quick way to convert Aseprite project to Rhythm Doctor Decoration json file.
@@ -61,12 +61,12 @@ When making sprite diagrams in Aseprite,
 
 The plug-in will create sprite expressions with the **loop section name** and a sprite diagram .png and .json file with the same name in **the same location as the open Aseprite project file** with **the animation direction of the loop**, **the duration of the frame (optional)**, and **parameters in the dialog**.
 
-###Warning
+### Warning
 + When exporting, make sure that the Aseprite project file you open does not have a .png file with the same name or a json file, or that these files have no important data.
 
 ***
 
-#Aserdecoration: Aseprite RD Decoration
+# Aserdecoration: Aseprite RD Decoration
 (機械による翻訳)
 
 アセプライトをリズムドクタージニーダイアグラムとその json ファイルに変換する簡単な方法。
@@ -96,5 +96,5 @@ The plug-in will create sprite expressions with the **loop section name** and a 
 
 プラグインは、ループのアニメーション方向、フレームの継続時間(オプション)、およびダイアログ内のパラメーターを使用して、開いている Aseprite プロジェクトファイルと同じ場所に、ループセクション名とスプライトダイアグラム .png と同じ名前の .json ファイルを使用してスプライト式を作成します。
 
-###注意
+### 注意
 +エクスポートするときは、開く Aseprite プロジェクトファイルに同じ名前の .png ファイルまたは .json ファイルが含まれていないこと、またはこれらのファイルに重要なデータがないことを確認してください。
