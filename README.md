@@ -4,9 +4,9 @@
 
 ### 安装：
 
-**双击 .aseprite-extension 文件**或**依次点击`编辑-首选项-扩展-添加扩展`**以安装。
+**双击 .aseprite-extension 文件**或**依次点击**`编辑-首选项-扩展-添加扩展`以安装。
 
-首次打开时需要选择语言，选择对应的语言后**重启插件(`编辑-首选项-扩展-禁用/启用`)**或**重启 Aseprite **以生效。
+首次打开时需要选择语言，选择对应的语言后**重启插件**(`编辑-首选项-扩展-禁用/启用`)或**重启 Aseprite **以生效。
 
 若需要更改语言，依次点击`窗口-更改 Aserdecoration 的语言`，之后以上述方法重启插件。
 
@@ -39,9 +39,9 @@ Open your Aseprite project file to export!
 
 ### Installation:
 
-**Double-click the .aseprite-extension file** or **click `Edit - Preferences - Extensions - Add Extension`** to install.
+**Double-click the .aseprite-extension file** or **click** `Edit - Preferences - Extensions - Add Extension` to install. 
 
-You need to select the language when opening it for the first time, and after selecting the corresponding language, **restart the plugin (`Edit-Preferences-Extension-Disable/Enable`)** or **Restart Aseprite** to take effect.
+You need to select the language when opening it for the first time, and after selecting the corresponding language, **restart the plugin** (`Edit-Preferences-Extension-Disable/Enable`) or **Restart Aseprite** to take effect. 
 
 If you need to change the language, click `Window - Change the language of Aserdecoration` and restart the plugin as described above.
 
@@ -74,7 +74,7 @@ The plug-in will create sprite expressions with the **loop section name** and a 
 
 ### インストール:
 
-.aseprite-extension ファイルをダブルクリックするか、[編集] - [設定] - [拡張機能] - [拡張機能の追加] をクリックしてインストールします。
+.aseprite-extension ファイルをダブルクリックするか、[編集] - [設定] - [拡張機能] - [拡張機能の追加] をクリックしてインストールします。 
 
 初めて開くときに言語を選択し、対応する言語を選択した後、プラグインを再起動するか(「編集-設定-拡張機能-無効化/有効化」)またはAsepriteを再起動して有効にする必要があります。
 
