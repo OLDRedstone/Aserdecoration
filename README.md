@@ -51,7 +51,7 @@ If you need to change the language, click `View - Change Aserdecoration language
 
 In Aseprite,
 
-1. Open/select the corresponding file (remember to save first!),
+1. Open/select the corresponding saved file,
 1. Adjust the frame duration in 'frame properties` (optional),
 1. Create a loop section:
 	1. Select desired frames,
