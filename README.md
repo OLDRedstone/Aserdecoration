@@ -45,7 +45,7 @@ Support version: v1.3-rc3 or above
 
 On first use: select the desired language then **restart the plugin** (`Edit-Preferences-Extension-Disable/Enable`) or **restart Aseprite** to take effect.
 
-If you need to change the language, click `View - Change the language of Aserdecoration` and restart the plugin as described above.
+If you need to change the language, click `View - Change Aserdecoration language` and restart the plugin as described above.
 
 ### Usage
 
@@ -59,7 +59,7 @@ In Aseprite,
 		1. or click `Frame - Tags - New Tag`
 1. Open `Tag properties` dialog and rename to the expression name,
 	1. Adjust other parameters if you want,
-1. Click `File - Export... - Export the Rhythm Doctor Sprite Decoration` to pop up the export dialog,
+1. Click `File - Export... - Export Rhythm Doctor Sprite` to pop up the export dialog,
 
 Plugin will fill-in sprite expressions based on the **loop section name**, and generate sprite sheet image (.png) and .json file based on **Animation Direction of the section**, **frame duration** and **the export settings**.
 
