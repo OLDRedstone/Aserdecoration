@@ -1,8 +1,8 @@
--- Translation by machine
--- Translation verifed by TM1357
+-- Translation by RaYmondCheung
+-- Translation verifed by
 return {
-    menuTitle = "Export the Rhythm Doctor Sprite Decoration",
-    changeLangMenuTitle = "Change the language of Aserdecoration",
+    menuTitle = "Export Rhythm Doctor Sprite",
+    changeLangMenuTitle = "Change Aserdecoration language",
     Name = "English (United States)",
     Id = "en-us",
     LangDialog = {
@@ -38,7 +38,7 @@ return {
             options = {
                 "Loop by beat",
                 "Always (beat-independent)",
-                "Does not loop",
+                "Single pass, no loop",
                 "Let me decide"
             },
         },
@@ -50,7 +50,7 @@ return {
             options = {
                 "Loop by beat",
                 "Always (beat-independent)",
-                "Does not loop"
+                "Single pass, no loop"
             },
         },
         loopDirection = {
@@ -59,8 +59,8 @@ return {
             options = {
                 "Forward",
                 "Reverse",
-                "Forward, Back",
-                "Reverse, Back",
+                "Ping-pong",
+                "Ping-pong Reverse",
                 "Follow Aseprite"
             },
         },
@@ -69,19 +69,19 @@ return {
             option = "Disabled",
             options = {
                 "Disabled",
-                "Average by Aseprite parameter",
-                "Try to get duplicate frames with the Aseprite parameter",
+                "Averaging by frame duration",
+                "Try to get duplicate frames by frame duration",
                 "Change all to"
             },
         },
         fpsSet = "fps",
-        fpsWarn = "Sprite plays back to the default expression",
+        fpsWarn = "Sprite will plays back to the default expression",
         outputMode = {
             label = "Arrangement",
             option = "Packed",
             options = {
-                "Horizontal",
-                "Vertical",
+                "Horizontal only",
+                "Vertical only",
                 "Packed"
             },
         },
