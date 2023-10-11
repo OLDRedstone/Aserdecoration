@@ -1,1 +1,0 @@
-langType = "zh-cn"
