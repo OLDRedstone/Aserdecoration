@@ -1,8 +1,8 @@
--- Translation by machine
--- Translation verifed by TM1357
+-- Translation by RaYmondCheung
+-- Translation verifed by
 return {
-    menuTitle = "Export the Rhythm Doctor Sprite Decoration",
-    changeLangMenuTitle = "Change the language of Aserdecoration",
+    menuTitle = "Export Rhythm Doctor Sprite",
+    changeLangMenuTitle = "Change Aserdecoration language",
     Name = "English (United States)",
     Id = "en-us",
     LangDialog = {
@@ -11,7 +11,7 @@ return {
             label = "Select your language"
         },
         ok = "OK",
-        warn = "Effective on restart"
+        warn = "Restart to take effect"
     },
     Error = {
         SaveFile = "Please open an existing file.",
@@ -24,33 +24,33 @@ return {
     Dialog = {
         Separator = {
             "Preview frame",
-            "The offset of the preview frame",
+            "Preview frame offset",
             "Animation and frame rate",
             "Export"
         },
         Title = "Sprite export options",
-        showPic = "Preview with a specific frame",
+        showPic = "Frame Preview",
         frameTitle = "Preview frame",
-        index = "Frame sequence number",
+        index = "Frame number",
         loopOption = {
             label = "Loop settings",
             option = "Loop by beat",
             options = {
                 "Loop by beat",
-                "Always looping (beat-independent)",
-                "Does not loop",
-                "Let me decide each one"
+                "Always (beat-independent)",
+                "Single pass, no loop",
+                "Let me decide"
             },
         },
         loopSetName = {
-            label = "Select an emoticon",
+            label = "Select expression",
         },
         loopSetData = {
             label = "Expression loop",
             options = {
                 "Loop by beat",
-                "Always looping (beat-independent)",
-                "Does not loop"
+                "Always (beat-independent)",
+                "Single pass, no loop"
             },
         },
         loopDirection = {
@@ -59,8 +59,8 @@ return {
             options = {
                 "Forward",
                 "Reverse",
-                "Forward, Back",
-                "Reverse, Back",
+                "Ping-pong",
+                "Ping-pong Reverse",
                 "Follow Aseprite"
             },
         },
@@ -69,26 +69,26 @@ return {
             option = "Disabled",
             options = {
                 "Disabled",
-                "Average by Aseprite parameter",
-                "Try to get duplicate frames with the Aseprite parameter",
+                "Averaging by frame duration",
+                "Try to get duplicate frames by frame duration",
                 "Change all to"
             },
         },
         fpsSet = "fps",
-        fpsWarn = "Sprite plays back to the default emoticon",
+        fpsWarn = "Sprite will plays back to the default expression",
         outputMode = {
             label = "Arrangement",
             option = "Packed",
             options = {
-                "Horizontal",
-                "Vertical",
+                "Horizontal only",
+                "Vertical only",
                 "Packed"
             },
         },
-        usage = "Usage",
-        spriteWarnTitle = "Automatically fill in blank expressions:",
+        usage = "Type",
+        spriteWarnTitle = "Automatically fill in following blank expressions:",
         ok = "OK",
         cancel = "Cancel",
     },
-    successfulExit = "Successful exit"
+    successfulExit = "Exit successfully"
 }
