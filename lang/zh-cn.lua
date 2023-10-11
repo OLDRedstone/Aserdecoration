@@ -11,7 +11,7 @@ return {
             label = "选择你的语言"
         },
         ok = "确定",
-        warn = "重启时生效"
+        warn = "重启后生效"
     },
     Error = {
         SaveFile = "请打开一个已有的文件。",
