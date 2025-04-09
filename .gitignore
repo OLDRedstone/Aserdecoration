@@ -1,5 +1,6 @@
 # Compiled Lua sources
 luac.out
+*.aseprite-extension
 
 # luarocks build files
 *.src.rock
@@ -39,3 +40,5 @@ luac.out
 *.x86_64
 *.hex
 
+# compiler
+*.bat

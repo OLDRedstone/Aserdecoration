@@ -1,0 +1,60 @@
+-- Made by Observer
+-- Translation verifed by Observer
+return {
+    ["language.name"] = "简体中文",
+    ["language.id"] = "zh_cn",
+    ["command.export"] = "导出节奏医生精灵图",
+    ["command.changeLanguage"] = "更改 AserDeco 的语言",
+
+    ["error.title"] = "出错啦！",
+    ["error.blank"] = "请打开一个已有的文件。",
+    ["error.saveFile"] = "请保存文件或打开一个已保存的文件。",
+    ["error.noTag"] = "当前文件上没有任何标签。",
+    ["error.fileWrite"] = "无法写入文件。",
+    ["error.frameZero"] = "无法处理空白帧或其他问题。请联系开发者。",
+
+    ["dialog.language.title"] = "语言",
+    ["dialog.language.label"] = "选择你的语言",
+    ["dialog.language.ok"] = "确定",
+    ["dialog.language.restartTip"] = "重启 Aseprite 以应用更改",
+
+    ["dialog.main.separator.expression"] = "动画与帧率",
+    ["dialog.main.separator.export"] = "导出",
+
+    ["dialog.main.title"] = "精灵图导出选项",
+    ["dialog.main.showPreview"] = "以特定帧作为预览",
+    ["dialog.main.previewFrame"] = "预览帧",
+    ["dialog.main.previewFrameOffset"] = "预览帧偏移",
+    ["dialog.main.frameTitle"] = "预览帧",
+    ["dialog.main.index"] = "帧序列号",
+    ["dialog.main.loopOption.label"] = "循环设置",
+    ["dialog.main.loopOption.option"] = "按节拍循环",
+    ["dialog.main.loopOptionIndividuallyTop.label"] = "修改$1的循环设置",
+    ["dialog.main.loopOptionIndividuallyName.label"] = "选择表情",
+    ["dialog.main.loopOptionIndividuallyData.label"] = "表情循环",
+    ["dialog.main.loopOptionIndividuallyData.options.beat"] = "按节拍循环",
+    ["dialog.main.loopOptionIndividuallyData.options.loop"] = "始终循环(不依赖节拍)",
+    ["dialog.main.loopOptionIndividuallyData.options.no"] = "不循环",
+    ["dialog.main.fpsMethod.label"] = "帧率设置",
+    ["dialog.main.fpsMethod.option"] = "禁用",
+    ["dialog.main.fpsSet"] = "fps",
+    ["dialog.main.fpsTip"] = "精灵图播放时会回到默认表情",
+    ["dialog.main.outputMode.label"] = "排列方式",
+    ["dialog.main.ok"] = "确定",
+    ["dialog.main.cancel"] = "取消",
+
+    ["option.loop.beat"] = "按节拍循环",
+    ["option.loop.loop"] = "始终循环(不依赖节拍)",
+    ["option.loop.no"] = "不循环",
+    ["option.loop.custom"] = "让我决定每一个",
+
+    ["option.fps.disabled"] = "禁用",
+    ["option.fps.average"] = "全局平均值",
+    ["option.fps.tagAverage"] = "标签内平均值",
+    ["option.fps.auto"] = "尝试以 Aseprite 参数获取重复帧",
+    ["option.fps.changeTo"] = "全部更改为",
+
+    ["option.pack.horizontalLine"] = "水平条",
+    ["option.pack.verticalLine"] = "垂直条",
+    ["option.pack.pack"] = "打包",
+}
