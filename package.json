@@ -2,7 +2,7 @@
   "name": "AseRDeco",
   "displayName": "AseRDeco",
   "description": "A quick way to convert Aseprite to Rhythm Doctor Decoration json file.",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "author": { "name": "Obugs", "email": "mail@obugs.zip", "url": "https://obugs.cn" },
   "contributors": [],
   "publisher": "VS Code",

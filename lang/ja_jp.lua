@@ -40,6 +40,8 @@ return {
 	["dialog.main.fpsTip"] = "スプライトはデフォルトの絵文字に再生されます",
 	["dialog.main.outputMode.label"] = "配置",
 	["dialog.main.ok"] = "確定",
+	["dialog.main.outputAsDecoration"] = "装飾としてエクスポート (JSON)",
+	["dialog.main.outputAsSprite"] = "スプライトとしてエクスポート (バイナリ)",
 	["dialog.main.cancel"] = "キャンセル",
 
 	["option.loop.beat"] = "ビートごとのサイクル",

@@ -41,6 +41,8 @@ return {
 	["dialog.main.fpsTip"] = "Sprite will plays back to the default expression",
 	["dialog.main.outputMode.label"] = "Arrangement",
 	["dialog.main.ok"] = "OK",
+	["dialog.main.outputAsDecoration"] = "Export as decoration (JSON)",
+	["dialog.main.outputAsSprite"] = "Export as sprite (binary)",
 	["dialog.main.cancel"] = "Cancel",
 
 	["option.loop.beat"] = "Loop by beat",

@@ -130,6 +130,11 @@ DecoDialogShowing = function(plugin)
 		Auto = 4,
 		ChangeTo = 5
 	}
+	ExportType = {
+		None = 0,
+		Deco = 1,
+		Sprite = 2,
+	}
 
 	local enumLocalization = {}
 	enumLocalization = {
@@ -316,9 +321,37 @@ DecoDialogShowing = function(plugin)
 	---@param data Expression
 	---@param maxLengthData table<string, integer>
 	---@return string
+	function JsonToStringWithoutEmpty(data)
+		local Output = '{'
+		local propertyOrder = {
+			"name",
+			"loop",
+			"fps",
+			"loopStart",
+			"portraitOffset",
+			"portraitSize",
+			"portraitScale",
+			"frames"
+		}
+		local tos = function(key, value)
+			local out = '"' .. key .. '":' .. serialize(value, key == "loopStart")
+			return out
+		end
+		for i = 1, #propertyOrder - 1 do
+			Output = Output ..
+					tos(propertyOrder[i], data[propertyOrder[i]]) .. ','
+		end
+		Output = Output ..
+				tos(propertyOrder[#propertyOrder], data[propertyOrder[#propertyOrder]])
+		return Output .. '}'
+	end
+
+	---comment
+	---@param data Expression
+	---@param maxLengthData table<string, integer>
+	---@return string
 	function JsonToString(data, maxLengthData)
 		local Output = '{'
-		local char = ''
 		local propertyOrder = {
 			"name",
 			"loop",
@@ -374,7 +407,7 @@ DecoDialogShowing = function(plugin)
 	local function initConfig()
 		---@class config
 		local config = {
-			previewFrame = 0,       -- 0 for no preview
+			previewFrame = 0, -- 0 for no preview
 			previewFrameOffsetX = 0,
 			previewFrameOffsetY = 0,
 			loopOption = LoopType.Beat,
@@ -383,6 +416,7 @@ DecoDialogShowing = function(plugin)
 			outputMode = PackMode.Pack,
 			---@type ConfigExpression[]
 			expressions = {},
+			exportType = ExportType.None,
 		}
 		config.expressionNames = function()
 			local names = {}
@@ -788,8 +822,13 @@ DecoDialogShowing = function(plugin)
 				}
 				:separator()
 				:button {
-					id = "ok",
-					text = lang["dialog.main.ok"],
+					id = "outputAsDecoration",
+					text = lang["dialog.main.outputAsDecoration"],
+					focus = true
+				}
+				:button {
+					id = "outputAsSprite",
+					text = lang["dialog.main.outputAsSprite"],
 					focus = true
 				}
 				:button {
@@ -809,7 +848,7 @@ DecoDialogShowing = function(plugin)
 	end
 
 	---@param config config
-	---@return config|nil
+	---@return config
 	local function GetDecoConfig(config)
 		local averageFps = 0
 		for _, frame in ipairs(currentSprite.frames) do
@@ -820,8 +859,11 @@ DecoDialogShowing = function(plugin)
 		config.fpsSet = averageFps
 		local dialog = createDialog(config)
 		dialog:show()
-		if not dialog.data.ok then
-			return nil
+		if dialog.data.outputAsDecoration then
+			config.exportType = ExportType.Deco
+		elseif dialog.data.outputAsSprite then
+			config.exportType = ExportType.Sprite
+		else
 		end
 		return config
 	end
@@ -829,7 +871,13 @@ DecoDialogShowing = function(plugin)
 	---@param sprite Sprite
 	---@param config config
 	---@return FrameInfo[]
-	local function compressSprite(sprite, config)
+	-- Resource table: collect resource/image/json handling helpers
+	local Resource = {}
+
+	---@param sprite Sprite
+	---@param config config
+	---@return FrameInfo[]
+	Resource.compressSprite = function(sprite, config)
 		---@type FrameInfo[][]
 		local cmpsedFrames = {}
 		---@param frame number
@@ -893,7 +941,7 @@ DecoDialogShowing = function(plugin)
 	---@param cmpsedFrames FrameInfo[]
 	---@param config config
 	---@param filename string
-	local function compressImage(sprite, cmpsedFrames, config, filename)
+	Resource.compressImage = function(sprite, cmpsedFrames, config, filename)
 		local size = { width = sprite.width, height = sprite.height }
 		local sizeCount = { width = 1, height = 1 }
 		local packMode = config.outputMode
@@ -932,11 +980,92 @@ DecoDialogShowing = function(plugin)
 		image:saveAs(filename .. ".png")
 	end
 
+	---@param sprite Sprite
+	---@return string[]
+	Resource.getFramesBytes = function(sprite)
+		local framesBytes = {}
+		for f = 1, #sprite.frames do
+			local img = Image(sprite.width, sprite.height)
+			drawFrame(sprite, img, f, Point(0, 0))
+			local tmpname = "temp_frame_" .. tostring(os.time()) .. "_" .. tostring(math.random(1000000, 9999999))
+			local tmppath = tmpname .. ".png"
+			img:saveAs(tmppath)
+			local fh = io.open(tmppath, "rb")
+			local data = nil
+			if fh then
+				data = fh:read("*a")
+				fh:close()
+				pcall(os.remove, tmppath)
+			else
+				data = ""
+			end
+			framesBytes[f] = data
+		end
+		return framesBytes
+	end
 	---@param expressions Expression[]
 	---@param config config
 	---@param sprite Sprite
 	---@return string
-	local function generateOutputJson(expressions, sprite, config)
+	Resource.generateOutputJsonWithoutEmpty = function(expressions, sprite, config)
+		if not table.any(expressions, function(v)
+					return v.name == "neutral"
+				end) then
+			expressions[#expressions + 1] = {
+				name = "neutral",
+				loop = RDLoopTypeTranslation[LoopType.NoLoop],
+				fps = 0,
+				loopOption = LoopType.NoLoop,
+				loopStart = 0,
+				portraitOffset = { config.previewFrameOffsetX, config.previewFrameOffsetY },
+				portraitSize = { currentSprite.width, currentSprite.height },
+				portraitScale = 2,
+				frames = {},
+				frameDurationData = {},
+			}
+		end
+		local header = '"size":[' .. sprite.width .. ',' .. sprite.height .. '],'
+		if config.previewFrame > 0 then
+			header = header .. '"rowPreviewFrame":' .. config.previewFrame - 1 .. ',' ..
+					'"rowPreviewOffset": [' ..
+					config.previewFrameOffsetX .. ',' .. config.previewFrameOffsetX .. '],'
+		end
+
+		local outputJson = ''
+		local maxLength = {
+			name = 0,
+			loop = 0,
+			fps = 0,
+			loopOption = 0,
+			loopStart = 0,
+			portraitOffset = 0,
+			portraitSize = 0,
+			portraitScale = 0,
+			frames = 0
+		}
+		for _, expression in pairs(expressions) do
+			for key, value in pairs(expression) do
+				if key ~= 'frameDurationData' then
+					if maxLength[key] < #tostring(serialize(value)) then
+						maxLength[key] = #tostring(serialize(value))
+					end
+				end
+			end
+		end
+		local char = ''
+		for _, expression in ipairs(table.values(expressions)) do
+			outputJson = outputJson .. char .. JsonToStringWithoutEmpty(expression)
+			char = ','
+		end
+		outputJson = '{' .. header .. '"clips":[' .. outputJson .. ']}'
+		return outputJson
+	end
+
+	---@param expressions Expression[]
+	---@param config config
+	---@param sprite Sprite
+	---@return string
+	Resource.generateOutputJson = function(expressions, sprite, config)
 		if not table.any(expressions, function(v)
 					return v.name == "neutral"
 				end) then
@@ -992,7 +1121,7 @@ DecoDialogShowing = function(plugin)
 
 	---@param filename string
 	---@param content string
-	local saveFile = function(filename, content)
+	Resource.saveFile = function(filename, content)
 		local file = io.open(filename .. ".json", "w")
 		if file then
 			file:write(content)
@@ -1008,17 +1137,65 @@ DecoDialogShowing = function(plugin)
 		end
 	end
 
-	local outConfig = GetDecoConfig(initConfig())
-	if not outConfig then
-		return
+	---@param filename string
+	---@param json string
+	---@param cmpsedFrames FrameInfo[][]
+	---@param sprite Sprite
+	---@param config config
+	Resource.encodeSprite = function(filename, json, cmpsedFrames, sprite, config)
+		local jsonBytes = tostring(json)
+		local allFrameBytes = Resource.getFramesBytes(sprite)
+		local images = {}
+		for _, v in ipairs(cmpsedFrames) do
+			local rep = v[1].frame
+			images[#images + 1] = allFrameBytes[rep] or ""
+		end
+		local function toBE(n, size)
+			local out = {}
+			for i = size - 1, 0, -1 do
+				local pow = 256 ^ i
+				local b = math.floor(n / pow) % 256
+				out[#out + 1] = string.char(b)
+			end
+			return table.concat(out)
+		end
+
+		local path = filename .. ".sprite"
+		local f = io.open(path, "wb")
+		if not f then
+			app.alert { title = lang["error.title"], text = lang["error.fileWrite"], buttons = { lang["dialog.main.ok"] } }
+			return
+		end
+		f:write("SPRT")
+		f:write(toBE(1, 2))
+		local jb = jsonBytes
+		f:write(toBE(#jb, 4))
+		f:write(jb)
+		f:write(toBE(#images, 4))
+		for idx = 0, #images - 1 do
+			local img = images[idx + 1] or ""
+			f:write(toBE(idx, 4))
+			f:write(toBE(#img, 4))
+			f:write(img)
+		end
+		f:close()
 	end
+
+	local outConfig = GetDecoConfig(initConfig())
 	---@type string
 	local filename = currentSprite.filename
 	filename = filename:match("[^.]+")
-	local cmpsedFrames = compressSprite(currentSprite, outConfig)
-	compressImage(currentSprite, cmpsedFrames, outConfig, filename)
-	local outputJson = generateOutputJson(outConfig.getPackedExpressions(), currentSprite, outConfig)
-	saveFile(filename, outputJson)
+	local cmpsedFrames = Resource.compressSprite(currentSprite, outConfig)
+	if outConfig.exportType == ExportType.Deco then
+		Resource.compressImage(currentSprite, cmpsedFrames, outConfig, filename)
+		local outputJson = Resource.generateOutputJson(outConfig.getPackedExpressions(), currentSprite, outConfig)
+		Resource.saveFile(filename, outputJson)
+	elseif outConfig.exportType == ExportType.Sprite then
+		local outputJson = Resource.generateOutputJsonWithoutEmpty(outConfig.getPackedExpressions(), currentSprite, outConfig)
+		Resource.encodeSprite(filename, outputJson, cmpsedFrames, currentSprite, outConfig)
+	elseif outConfig.exportType == ExportType.None then
+		return
+	end
 end
 
 function init(plugin)

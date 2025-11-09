@@ -41,6 +41,8 @@ return {
 	["dialog.main.fpsTip"] = "精灵图播放时会回到默认表情",
 	["dialog.main.outputMode.label"] = "排列方式",
 	["dialog.main.ok"] = "确定",
+	["dialog.main.outputAsDecoration"] = "导出为装饰（JSON）",
+	["dialog.main.outputAsSprite"] = "导出为精灵图（二进制）",
 	["dialog.main.cancel"] = "取消",
 
 	["option.loop.beat"] = "按节拍循环",

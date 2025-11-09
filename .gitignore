@@ -1,6 +1,7 @@
 # Compiled Lua sources
 luac.out
 *.aseprite-extension
+*.cs
 
 # luarocks build files
 *.src.rock
